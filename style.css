@@ -1245,3 +1245,14 @@ body.mobile-menu-open {
         background: linear-gradient(to bottom, rgba(0,0,0,0.4), var(--bg)) !important;
     }
 }
+
+@media (max-width: 768px) {
+    .loading-text {
+        width: 100%;
+        text-align: center;
+        font-size: 1.3rem;
+        left: 0;
+        right: 0;
+    }
+}
+
