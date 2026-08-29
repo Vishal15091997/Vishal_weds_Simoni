@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Our Wedding - Gallery</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Montserrat:wght@300;400;500&family=Cinzel+Decorative:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .gallery-container {
+      width: 100%;
+      flex: 1;
+      display: flex;
+      align-items: center;
+      perspective: 1000px;
+      overflow: hidden;
+      background: radial-gradient(circle at 50% 50%, #b30000 0%, #4a0000 70%, #1a0000 100%);
+      position: relative;
+      /* subtle inner shading, avoid hiding image shadows */
+      box-shadow: inset 0 0 60px rgba(0,0,0,0.55);
+    }
+
+    @media (max-width: 768px) {
+      .gallery-container {
+        perspective: none;
+      }
+      .wall-container {
+        padding: 0 12px;
+      }
+      .photo-row {
+        height: 170px;
+        gap: 12px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .photo-row {
+        height: 130px;
+        gap: 8px;
+      }
+    }
+
+    .gallery-container::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      /* reduce overlay opacity so image shadows remain visible */
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.06) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .wall-container {
+      position: relative;
+      left: 0;
+      width: fit-content;
+      min-width: 100%;
+      padding: 0 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      will-change: left;
+      backface-visibility: hidden;
+    }
+
+    .photo-row {
+      position: relative;
+      display: flex;
+      height: 200px;
+      gap: 20px;
+    }
+
+    .photo-frame {
+      position: relative;
+      flex-shrink: 0;
+      height: 100%;
+      aspect-ratio: 1.1;
+      overflow: visible;
+      border-radius: 8px;
+    }
+
+    .photo-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.36);
+      border: 2px solid var(--gold);
+      border-radius: 8px;
+      background-color: var(--ivory);
+      backface-visibility: hidden;
+      transform: translateZ(0);
+      will-change: transform, box-shadow;
+      display: block;
+    }
+
+    @media (max-width: 768px) {
+      .photo-row {
+        height: 140px;
+        gap: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <nav class="container nav-grid">
+      <a class="brand" href="index.html">V &amp; S</a>
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="couple.html">The Couple</a>
+        <div class="dropdown">
+          <a href="event.html">Our Story</a>
+          <div class="dropdown-content">
+            <a href="roka.html">Roka</a>
+            <a href="engagement.html">Engagement</a>
+            <a href="sangeet.html">Sangeet</a>
+            <a href="haldi.html">Haldi</a>
+            <a href="wedding.html">Wedding</a>
+            <a href="reception.html">Reception</a>
+          </div>
+        </div>
+        <div class="dropdown">
+          <a href="venue.html">Venue</a>
+          <div class="dropdown-content">
+            <a href="khajuraho-history.html">Khajuraho History</a>
+          </div>
+        </div>
+        <a href="gallery.html">Gallery</a>
+      </div>
+    </nav>
+  </header>
+
+  <main style="display: flex; flex-direction: column;">
+    <div class="gallery-container">
+      <div class="wall-container" id="main-wall"></div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-compact-row">
+      <div class="countdown" aria-live="polite">
+        <div><span id="days">0</span><small>Days</small></div>
+        <div><span id="hours">0</span><small>Hours</small></div>
+        <div><span id="minutes">0</span><small>Minutes</small></div>
+        <div><span id="seconds">0</span><small>Seconds</small></div>
+      </div>
+      <p class="footer-quote-inline">Two hearts. Two families. One beautiful beginning.</p>
+      <div class="wedding-seal">
+        <div class="seal-inner">
+          <span class="seal-month">NOV</span>
+          <span class="seal-day">20</span>
+          <span class="seal-year">2026</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <script src="countdown.js"></script>
+  <script>
+    let scrollPosition = 0;
+    let isManualScrolling = false;
+    let scrollTimeout;
+    let rowShift = 0;
+    let initialScrollPosition = 0;
+    let hasScrolledPastStart = false;
+    let autoScrollStarted = false;
+    const initialVisibleImages = 10;
+    const manifestBatchDelay = 12;
+    const galleryManifestPath = 'Gallery/manifest.json';
+    let gallerySourceRow = null;
+
+    function createPhotoWall() {
+      const wall = document.getElementById('main-wall');
+      wall.innerHTML = ''; // Clear existing content
+
+      gallerySourceRow = document.createElement('div');
+      gallerySourceRow.classList.add('photo-row');
+      gallerySourceRow.id = 'main-row';
+      gallerySourceRow.style.display = 'none';
+
+      loadGallerySources(gallerySourceRow);
+    }
+
+    async function loadGallerySources(row) {
+      let imageFiles = [];
+      try {
+        const response = await fetch(galleryManifestPath, { cache: 'no-store' });
+        if (response.ok) {
+          imageFiles = await response.json();
+        } else {
+          console.warn('Gallery manifest fetch failed with status', response.status);
+        }
+      } catch (error) {
+        console.warn('Gallery manifest fetch failed', error);
+      }
+
+      if (Array.isArray(imageFiles) && imageFiles.length > 0) {
+        loadManifestImages(row, imageFiles);
+      } else {
+        console.warn('Gallery manifest empty or missing; falling back to scan mode.');
+        await scanGalleryImages(row);
+      }
+    }
+
+    async function loadManifestImages(row, imageFiles) {
+      const initialFiles = imageFiles.slice(0, initialVisibleImages);
+      if (initialFiles.length === 0) {
+        console.warn('Gallery manifest contained no image filenames.');
+        loadFallbackImages(row);
+        return;
+      }
+
+      initialFiles.forEach((filename, index) => {
+        const padded = String(index + 1).padStart(2, '0');
+        appendPhotoFrame(row, `Gallery/${filename}`, padded);
+      });
+
+      finalizeWall(row);
+
+      const remaining = imageFiles.slice(initialFiles.length);
+      if (remaining.length > 0) {
+        scheduleBackgroundManifestLoad(row, remaining);
+      }
+    }
+
+    function scheduleBackgroundManifestLoad(row, remaining) {
+      const loader = async () => {
+        for (const filename of remaining) {
+          appendPhotoFrame(row, `Gallery/${filename}`, String(row.children.length + 1).padStart(2, '0'));
+          if (row.children.length % 5 === 0) {
+            rebuildWallFromRow(row);
+          }
+          await new Promise((resolve) => setTimeout(resolve, manifestBatchDelay));
+        }
+        rebuildWallFromRow(row);
+      };
+
+      if (window.requestIdleCallback) {
+        window.requestIdleCallback(() => loader().catch(console.warn), { timeout: 200 });
+      } else {
+        setTimeout(() => loader().catch(console.warn), 50);
+      }
+    }
+
+    function rebuildWallFromRow(row) {
+      const currentPosition = scrollPosition;
+      renderWallFromSource(row);
+      scrollPosition = currentPosition;
+      updateWallPosition();
+    }
+
+    async function scanGalleryImages(row) {
+      let loadedPhotos = 0;
+      const maxPhotos = 200; // upper bound to avoid infinite scanning
+      const maxConsecutiveMisses = 12;
+      let consecutiveMisses = 0;
+      const extensions = ['.jpg', '.JPG', '.jpeg', '.JPEG', '.png', '.PNG'];
+      let initialWallStarted = false;
+
+      for (let i = 1; i <= maxPhotos; i++) {
+        const paddedNum = i.toString().padStart(2, '0');
+        let found = false;
+
+        for (const ext of extensions) {
+          const imagePath = `Gallery/photo${paddedNum}${ext}`;
+          const exists = await new Promise((resolve) => {
+            const img = new Image();
+            img.onload = () => resolve(true);
+            img.onerror = () => resolve(false);
+            img.src = imagePath;
+          });
+
+          if (exists) {
+            appendPhotoFrame(row, imagePath, paddedNum);
+            loadedPhotos++;
+            found = true;
+            consecutiveMisses = 0;
+            break;
+          }
+        }
+
+        if (!found) {
+          consecutiveMisses++;
+        }
+
+        if (!initialWallStarted && loadedPhotos >= initialVisibleImages) {
+          finalizeWall(row);
+          initialWallStarted = true;
+        }
+
+        if (initialWallStarted && loadedPhotos % 5 === 0) {
+          rebuildWallFromRow(row);
+        }
+
+        if (consecutiveMisses >= maxConsecutiveMisses) break;
+        await new Promise((resolve) => setTimeout(resolve, 0));
+      }
+
+      if (loadedPhotos === 0) {
+        console.warn('No Gallery images found — loading fallback images.');
+        loadFallbackImages(row);
+      } else if (!initialWallStarted) {
+        finalizeWall(row);
+      } else {
+        rebuildWallFromRow(row);
+      }
+    }
+
+    function appendPhotoFrame(row, imagePath, altText) {
+      const frame = document.createElement('div');
+      frame.classList.add('photo-frame');
+      frame.innerHTML = `
+        <img src="${imagePath}" alt="Gallery Photo ${altText}" loading="lazy" decoding="async" />
+      `;
+      row.appendChild(frame);
+    }
+
+    function loadFallbackImages(row) {
+      const fallbackImages = [
+        'images/groom.jpg', 'images/bride.jpg',
+        'images/Vishal_Life_01.jpg', 'images/Simoni_Life_01.jpg',
+        'images/Little_Vishal.jpg', 'images/Little_Simoni.jpg'
+      ];
+      
+      fallbackImages.forEach((path, i) => {
+        const num = (i + 1).toString().padStart(2, '0');
+        appendPhotoFrame(row, path, num);
+      });
+      
+      finalizeWall(row);
+    }
+
+    function renderWallFromSource(row) {
+      if (!row || row.children.length === 0) return;
+
+      const wall = document.getElementById('main-wall');
+      const rowA = document.createElement('div');
+      rowA.classList.add('photo-row');
+      rowA.id = 'main-row-1';
+
+      const rowB = document.createElement('div');
+      rowB.classList.add('photo-row');
+      rowB.id = 'main-row-2';
+
+      const children = Array.from(row.children);
+      children.forEach((child, idx) => {
+        const cloned = child.cloneNode(true);
+        if (idx % 2 === 0) rowA.appendChild(cloned);
+        else rowB.appendChild(cloned);
+      });
+
+      wall.innerHTML = '';
+      wall.appendChild(rowA);
+      wall.appendChild(rowB);
+
+      // Compute sizing using same measurements as CSS
+      const isMobile = window.innerWidth <= 768;
+      const itemHeight = isMobile ? 140 : 200; // matches CSS in this file
+      const gap = isMobile ? 10 : 20;
+      const itemWidth = itemHeight * 1.1;
+
+      const baseWidthA = (itemWidth + gap) * rowA.children.length || 0.0001;
+      const baseWidthB = (itemWidth + gap) * rowB.children.length || 0.0001;
+      const baseWidth = Math.max(baseWidthA, baseWidthB);
+
+      const minRequiredWidth = window.innerWidth * 2;
+
+      const ensureDup = (rEl, baseW) => {
+        if (!rEl || rEl.children.length === 0) return;
+        let duplicatesNeeded = Math.ceil(minRequiredWidth / baseW);
+        duplicatesNeeded = Math.max(1, duplicatesNeeded);
+        const originals = Array.from(rEl.children);
+        for (let i = 0; i < duplicatesNeeded; i++) originals.forEach(ch => rEl.appendChild(ch.cloneNode(true)));
+      };
+
+      ensureDup(rowA, baseWidthA);
+      ensureDup(rowB, baseWidthB);
+
+      rowShift = baseWidth;
+      if (!autoScrollStarted) {
+        autoScrollStarted = true;
+        autoScrollWall();
+      }
+      updateWallPosition();
+    }
+
+    function finalizeWall(row) {
+      renderWallFromSource(row);
+    }
+
+    function updateWallPosition() {
+      const wallEl = document.getElementById('main-wall');
+
+      if (!rowShift || !wallEl) return;
+
+      if (scrollPosition <= -rowShift) {
+        scrollPosition += rowShift;
+      }
+
+      if (scrollPosition >= rowShift) {
+        scrollPosition -= rowShift;
+      }
+
+      wallEl.style.left = `${scrollPosition}px`;
+    }
+
+    function autoScrollWall() {
+      if (!isManualScrolling) {
+        const isMobile = window.innerWidth <= 768;
+        const autoScrollSpeed = isMobile ? 0.25 : 0.6;
+        scrollPosition -= autoScrollSpeed;
+        updateWallPosition();
+      }
+      requestAnimationFrame(autoScrollWall);
+    }
+
+    window.addEventListener('wheel', (event) => {
+      isManualScrolling = true;
+
+      const isMobile = window.innerWidth <= 768;
+      const scrollFactor = isMobile ? 0.35 : 0.8;
+      scrollPosition -= event.deltaY * scrollFactor;
+      updateWallPosition();
+
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(() => {
+        isManualScrolling = false;
+      }, 150);
+    }, { passive: true });
+
+    createPhotoWall();
+  </script>
+
+  <!-- Lightbox Overlay -->
+  <div class="lightbox-overlay" id="lightboxOverlay">
+    <div class="lightbox-content">
+      <button class="lightbox-close" id="lightboxClose">&times;</button>
+      <img src="" alt="Fullscreen Image" class="lightbox-img" id="lightboxImg">
+    </div>
+  </div>
+  <script src="lightbox.js"></script>
+  <script src="responsive-imgs.js"></script>
+</body>
+</html>

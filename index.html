@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Our Wedding - Home</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Montserrat:wght@300;400;500&family=Cinzel+Decorative:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="loading-active">
+  <div id="loader" class="loading-wrapper">
+    <div class="loading-content">
+      <div class="loader-dots">
+        <div class="loader-dot"></div>
+        <div class="loader-dot"></div>
+        <div class="loader-dot"></div>
+        <div class="loader-dot"></div>
+        <div class="loader-dot"></div>
+      </div>
+      <div class="loading-text">Enter our World</div>
+    </div>
+  </div>
+
+  <header class="topbar">
+    <nav class="container nav-grid">
+      <a class="brand" href="index.html">V &amp; S</a>
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="couple.html">The Couple</a>
+        <div class="dropdown">
+          <a href="event.html">Our Story</a>
+          <div class="dropdown-content">
+            <a href="roka.html">Roka</a>
+            <a href="engagement.html">Engagement</a>
+            <a href="sangeet.html">Sangeet</a>
+            <a href="haldi.html">Haldi</a>
+            <a href="wedding.html">Wedding</a>
+            <a href="reception.html">Reception</a>
+          </div>
+        </div>
+        <div class="dropdown">
+          <a href="venue.html">Venue</a>
+          <div class="dropdown-content">
+            <a href="khajuraho-history.html">Khajuraho History</a>
+          </div>
+        </div>
+        <a href="gallery.html">Gallery</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero" aria-label="Wedding Hero">
+      <div class="hero-overlay"></div>
+      <div class="glass-card" role="banner" aria-live="polite">
+        <h1>Vishal &amp; Simoni</h1>
+        <p>It started with a simple "Let's See",<br>
+          Now it's just You and Me...<br>
+          Two souls met and quietly knew,<br>
+          This forever begins with "I Choose You"...
+        </p>
+        <a class="button-89" href="couple.html">Meet the Couple</a>
+      </div>
+    </section>
+
+    <div class="cards-container">
+      <div class="card">
+        <div class="img-container">
+          <img src="images/groom.jpg" alt="Vishal"/>
+        </div>
+        <div class="card-details">
+          <h2>Vishal</h2>
+          <p>Thoughtful, calm and grounded, Vishal believes in sincerity, family and the beauty of simple moments. His quiet strength and warm humour bring balance and joy to every room he walks into.</p>
+        </div>
+      </div>
+      <div class="card-divider"></div>
+      <div class="card">
+        <div class="img-container">
+          <img src="images/bride.jpg" alt="Simoni"/>
+        </div>
+        <div class="card-details">
+          <h2>Simoni</h2>
+          <p>Graceful, cheerful and full of life, Simoni carries a warmth that makes everyone feel welcome. Her kindness, laughter and vibrant spirit bring light and happiness wherever she goes.</p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-compact-row">
+      <div class="countdown" aria-live="polite">
+        <div><span id="days">0</span><small>Days</small></div>
+        <div><span id="hours">0</span><small>Hours</small></div>
+        <div><span id="minutes">0</span><small>Minutes</small></div>
+        <div><span id="seconds">0</span><small>Seconds</small></div>
+      </div>
+      <p class="footer-quote-inline">Two hearts. Two families. One beautiful beginning.</p>
+      <div class="wedding-seal">
+        <div class="seal-inner">
+          <span class="seal-month">NOV</span>
+          <span class="seal-day">20</span>
+          <span class="seal-year">2026</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="countdown.js"></script>
+  <script>
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        const loader = document.getElementById('loader');
+        if (loader) {
+          loader.classList.add('hidden');
+          document.body.classList.remove('loading-active');
+        }
+      }, 3500);
+    });
+  </script>
+    <script src="responsive-imgs.js"></script>
+</body>
+</html>
