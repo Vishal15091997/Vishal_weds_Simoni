@@ -1,0 +1,99 @@
+/* Mobile Nav CSS */
+.hamburger-menu {
+  display: none;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 2rem;
+  height: 2rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 100;
+}
+
+.hamburger-menu span {
+  width: 2rem;
+  height: 0.25rem;
+  background: var(--gold);
+  border-radius: 10px;
+  transition: all 0.3s linear;
+  position: relative;
+  transform-origin: 1px;
+}
+
+.mobile-nav-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(107, 0, 0, 0.95);
+  backdrop-filter: blur(10px);
+  z-index: 90;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.mobile-nav-overlay.active {
+  display: flex;
+  opacity: 1;
+}
+
+.mobile-nav-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  text-align: center;
+  width: 100%;
+  padding: 2rem;
+  max-height: 100vh;
+  overflow-y: auto;
+}
+
+.mobile-nav-content a, .mobile-dropdown-btn {
+  font-size: 1.5rem;
+  color: #fff;
+  text-transform: uppercase;
+  text-decoration: none;
+  letter-spacing: 2px;
+  background: none;
+  border: none;
+  font-family: 'Montserrat', sans-serif;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.mobile-nav-content a:hover, .mobile-dropdown-btn:hover {
+  color: var(--gold);
+}
+
+.mobile-dropdown-content {
+  display: none;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 1rem;
+  background: rgba(0, 0, 0, 0.2);
+  padding: 1rem;
+  border-radius: 8px;
+}
+
+.mobile-dropdown.open .mobile-dropdown-content {
+  display: flex;
+}
+
+body.mobile-menu-open {
+  overflow: hidden;
+}
+
+@media (max-width: 960px) {
+  .nav-links {
+    display: none;
+  }
+  .hamburger-menu {
+    display: flex;
+  }
+}

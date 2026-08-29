@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -8,6 +8,10 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Montserrat:wght@300;400;500&family=Cinzel+Decorative:wght@400;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
+  <meta property="og:title" content="Vishal & Simoni's Wedding" />
+  <meta property="og:description" content="Join us in celebrating!" />
+  <meta property="og:image" content="images/og-image.jpg" />
+  <meta property="og:url" content="https://vishalandsimoni.com/" />
 </head>
 <body>
   <header class="topbar">
@@ -35,14 +39,43 @@
         </div>
         <a href="gallery.html">Gallery</a>
       </div>
+      <button class="hamburger-menu" aria-label="Toggle navigation menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
     </nav>
+    <div class="mobile-nav-overlay" id="mobileNavOverlay">
+      <div class="mobile-nav-content">
+        <a href="index.html">Home</a>
+        <a href="couple.html">The Couple</a>
+        <div class="mobile-dropdown">
+          <button class="mobile-dropdown-btn">Our Story â–¼</button>
+          <div class="mobile-dropdown-content">
+            <a href="roka.html">Roka</a>
+            <a href="engagement.html">Engagement</a>
+            <a href="sangeet.html">Sangeet</a>
+            <a href="haldi.html">Haldi</a>
+            <a href="wedding.html">Wedding</a>
+            <a href="reception.html">Reception</a>
+          </div>
+        </div>
+        <div class="mobile-dropdown">
+          <button class="mobile-dropdown-btn">Venue â–¼</button>
+          <div class="mobile-dropdown-content">
+            <a href="khajuraho-history.html">Khajuraho History</a>
+          </div>
+        </div>
+        <a href="gallery.html">Gallery</a>
+      </div>
+    </div>
   </header>
 
   <main class="container">
     <section class="section-block">
       <h2>Our Story</h2>
       <h3 style="font-size: 1.3rem; color: var(--maroon); font-weight: 600; margin-bottom: 1.5rem; font-style: italic;">How Destiny Found Love Through An Arranged Marriage</h3>
-      <p>What began as a simple introduction between two families slowly blossomed into something far more meaningful. In the quiet moments of conversation and shared laughter, two people discovered not only compatibility but also warmth, friendship and understanding. An arranged meeting soon turned into countless conversations, shared dreams and a growing bond. Sometimes destiny writes stories in the most unexpected ways — and this is where our story truly began.</p>
+      <p>What began as a simple introduction between two families slowly blossomed into something far more meaningful. In the quiet moments of conversation and shared laughter, two people discovered not only compatibility but also warmth, friendship and understanding. An arranged meeting soon turned into countless conversations, shared dreams and a growing bond. Sometimes destiny writes stories in the most unexpected ways â€” and this is where our story truly began.</p>
     </section>
 
     <section class="section-block events-content">
@@ -98,7 +131,7 @@
 
   <footer class="site-footer">
     <div class="container footer-compact-row">
-      <div class="countdown" aria-live="polite">
+      <div class="countdown-sr-only" style="position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0,0,0,0);">Countdown to Wedding: November 20, 2026</div><div class="countdown" aria-hidden="true">
         <div><span id="days">0</span><small>Days</small></div>
         <div><span id="hours">0</span><small>Hours</small></div>
         <div><span id="minutes">0</span><small>Minutes</small></div>
@@ -116,5 +149,7 @@
   </footer>
   <script src="countdown.js"></script>
   <script src="responsive-imgs.js"></script>
+  <script src="mobile-menu.js"></script>
 </body>
 </html>
+
