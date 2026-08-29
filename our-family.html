@@ -8,10 +8,12 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Montserrat:wght@300;400;500&family=Cinzel+Decorative:wght@400;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="mobile_nav.css" />
   <meta property="og:title" content="Vishal & Simoni's Wedding" />
   <meta property="og:description" content="Join us in celebrating!" />
   <meta property="og:image" content="https://vishal15091997.github.io/Antigravity/images/og-image.jpeg" />
   <meta property="og:url" content="https://vishal15091997.github.io/Antigravity/" />
+  <meta name="color-scheme" content="light only" />
 </head>
 <body>
   <header class="topbar">
@@ -50,15 +52,37 @@
         <span></span>
       </button>
     </nav>
-    <div class="mobile-nav-overlay" id="mobileNavOverlay">
-      <nav class="nav-links">
-        <a href="index.html">Home</a>
-        <div class="dropdown">
-          <a href="couple.html">The Couple</a>
-          <div class="dropdown-content">
-            <a href="our-family.html">Our Family</a>
-          </div>
+    <!-- Mobile Side Drawer -->
+    <div class="mobile-drawer-overlay" id="mobileDrawerOverlay"></div>
+    <div class="mobile-drawer" id="mobileDrawer">
+        <div class="drawer-header">
+            <span class="drawer-title">Menu</span>
+            <button class="drawer-close" aria-label="Close menu">&times;</button>
         </div>
+        <div class="drawer-content">
+            <a href="index.html" class="drawer-link">Home</a>
+            <a href="couple.html" class="drawer-link">The Couple</a>
+            <div class="drawer-dropdown">
+                <button class="drawer-dropdown-btn">Our Story <span class="arrow">&#9660;</span></button>
+                <div class="drawer-dropdown-content">
+                    <a href="roka.html">Roka</a>
+                    <a href="engagement.html">Engagement</a>
+                    <a href="sangeet.html">Sangeet</a>
+                    <a href="haldi.html">Haldi</a>
+                    <a href="wedding.html">Wedding</a>
+                    <a href="reception.html">Reception</a>
+                </div>
+            </div>
+            <div class="drawer-dropdown">
+                <button class="drawer-dropdown-btn">Venue <span class="arrow">&#9660;</span></button>
+                <div class="drawer-dropdown-content">
+                    <a href="khajuraho-history.html">Khajuraho History</a>
+                </div>
+            </div>
+            <a href="gallery.html" class="drawer-link">Gallery</a>
+        </div>
+    </div>
+    
         <div class="dropdown">
           <a href="event.html">Our Story</a>
           <div class="dropdown-content">
@@ -78,6 +102,36 @@
         </div>
         <a href="gallery.html">Gallery</a>
       </nav>
+    <!-- Mobile Side Drawer -->
+    <div class="mobile-drawer-overlay" id="mobileDrawerOverlay"></div>
+    <div class="mobile-drawer" id="mobileDrawer">
+        <div class="drawer-header">
+            <span class="drawer-title">Menu</span>
+            <button class="drawer-close" aria-label="Close menu">&times;</button>
+        </div>
+        <div class="drawer-content">
+            <a href="index.html" class="drawer-link">Home</a>
+            <a href="couple.html" class="drawer-link">The Couple</a>
+            <div class="drawer-dropdown">
+                <button class="drawer-dropdown-btn">Our Story <span class="arrow">&#9660;</span></button>
+                <div class="drawer-dropdown-content">
+                    <a href="roka.html">Roka</a>
+                    <a href="engagement.html">Engagement</a>
+                    <a href="sangeet.html">Sangeet</a>
+                    <a href="haldi.html">Haldi</a>
+                    <a href="wedding.html">Wedding</a>
+                    <a href="reception.html">Reception</a>
+                </div>
+            </div>
+            <div class="drawer-dropdown">
+                <button class="drawer-dropdown-btn">Venue <span class="arrow">&#9660;</span></button>
+                <div class="drawer-dropdown-content">
+                    <a href="khajuraho-history.html">Khajuraho History</a>
+                </div>
+            </div>
+            <a href="gallery.html" class="drawer-link">Gallery</a>
+        </div>
+    </div>
     </div>
   </header>
 
@@ -143,5 +197,8 @@
   <script src="lightbox.js"></script>
 </body>
 </html>
+
+
+
 
 
